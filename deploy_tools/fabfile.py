@@ -11,7 +11,7 @@ def deploy():
     with cd(site_folder):
         _get_latest_source()
         _update_virtualenv()
-        _create_or_update_doenv()
+        _create_or_update_dotenv()
         _update_static_files()
         _update_database()
 
@@ -39,7 +39,7 @@ def _create_or_update_dotenv():
         new_secret = ''.join(random.SystemRandom().choices(
             'abcdefghijklmnopqrstuvwxyz0123456789', k=50
         ))
-    append('.env', f'DJANGO_SECRET_KEY={new_secret}')
+        append('.env', f'DJANGO_SECRET_KEY={new_secret}')
 
 
 def _update_static_files():

@@ -10,11 +10,11 @@ pipeline {
                 }
             }
             steps {
-                sh 'python --version'
+                sh 'python3 --version'
                 sh 'pip install -r requirements.txt'
-                sh 'python manage.py test accounts lists'
+                sh 'python3 manage.py test accounts lists'
                 sh 'pip install selenium fabric3'
-                sh 'python  manage.py test functional_tests'
+                sh 'python3  manage.py test functional_tests'
             }
         }
     }

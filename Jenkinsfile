@@ -5,10 +5,10 @@ pipeline {
         stage('build') {
             steps {
                 sh 'python --version'
-                pip install -r requirements.txt
-                python manage.py test accounts lists
-                pip install selenium fabric3
-                python  manage.py test functional_tests
+                sh 'pip install -r requirements.txt'
+                sh 'python manage.py test accounts lists'
+                sh 'pip install selenium fabric3'
+                sh 'python  manage.py test functional_tests'
             }
         }
     }

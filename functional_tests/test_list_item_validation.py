@@ -6,7 +6,7 @@ from unittest import skip
 class ItemValidationTest(FunctionalTest):
 
     def get_error_element(self):
-        return self.browser.find_element_by_css_selector('.has-error')
+        return self.browser.find_element('css selector', '.has-error')
 
 
     def test_cannot_add_empty_list_items(self):
@@ -23,8 +23,8 @@ class ItemValidationTest(FunctionalTest):
 
         # She starts typing some text for the new item and the error disappears
         self.get_item_input_box().send_keys('Buy milk')
-        self.wait_for(lambda: self.browser.find_elements_by_css_selector(
-            '#id_text:valid'
+        self.wait_for(lambda: self.browser.find_elements(
+            'css selector', '#id_text:valid'
         ))
 
         # And she can submit it successfully
@@ -36,14 +36,14 @@ class ItemValidationTest(FunctionalTest):
 
         # Again, the browser will not comply
         self.wait_for_row_in_list_table('1: Buy milk')
-        self.wait_for(lambda: self.browser.find_elements_by_css_selector(
-            '#id_text:valid'
+        self.wait_for(lambda: self.browser.find_elements(
+            'css selector', '#id_text:valid'
         ))
 
         # And she can correct it by filling some text in
         self.get_item_input_box().send_keys('Make tea')
-        self.wait_for(lambda: self.browser.find_elements_by_css_selector(
-            '#id_text:valid'
+        self.wait_for(lambda: self.browser.find_elements(
+            'css selector', '#id_text:valid'
         ))
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy milk')

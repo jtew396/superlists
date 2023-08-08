@@ -249,3 +249,48 @@ class NewListViewUnitTest(unittest.TestCase):
         mock_form.is_valid.return_value = False
         new_list(self.request)
         self.assertFalse(mock_form.save.called)
+
+
+class ShareListTest(TestCase):
+
+    def test_POST_redirects_to_lists_page(self):
+        user = User.objects.create(email='a@b.com')
+        list_ = List.objects.create()
+        response = self.client.post(
+            f'/lists/{list_.id}/share',
+            data={'email': user.email}
+        )
+        self.assertRedirects(response, f'/lists/{list_.id}/')
+
+
+    def test_can_share_a_list_with_POST(self):
+        user = User.objects.create(email='a@b.com')
+        list_ = List.objects.create()
+        response = self.client.post(
+            f'/lists/{list_.id}/share',
+            data={'email': user.email}
+        )
+        self.assertIn(user, list_.shared_with.all())
+
+
+    def test_renders_shared_lists_on_my_lists_page(self):
+        user = User.objects.create(email='a@b.com')
+        list_ = List.objects.create()
+        list_.shared_with.add(user)
+        response = self.client.get('/lists/users/a@b.com/')
+        self.assertEqual(response.context['lists_shared_with_owner'], user.shared_with_list_set)
+
+
+    def test_renders_shared_with_emails_on_list_page(self):
+        user = User.objects.create(email='a@b.com')
+        list_ = List.objects.create()
+        list_.shared_with.add(user)
+        response = self.client.get(f'/lists/{list_.id}/')
+        self.assertEqual(response.context['shared_with'], list_.shared_with)
+
+
+    def test_renders_owner_on_list_page(self):
+        user = User.objects.create(email='a@b.com')
+        list_ = List.objects.create(owner=user)
+        response = self.client.get(f'/lists/{list_.id}/')
+        self.assertEqual(response.context['owner'], user)
